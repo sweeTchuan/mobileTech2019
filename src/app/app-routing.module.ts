@@ -6,12 +6,12 @@ const routes: Routes = [
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'test-page', loadChildren: './test-page/test-page.module#TestPagePageModule' },
   { path: 'tp2', loadChildren: './tp2/tp2.module#Tp2PageModule' },
-  { path: 'tp3', loadChildren: './tp3/tp3.module#Tp3PageModule' },
   { path: 'tp-activity', loadChildren: './tp-activity/tp-activity.module#TpActivityPageModule' },
   { path: 'tp-profile', loadChildren: './tp-profile/tp-profile.module#TpProfilePageModule' },
   { path: 'tp-login', loadChildren: './tp-login/tp-login.module#TpLoginPageModule' },
   { path: 'tp-register', loadChildren: './tp-register/tp-register.module#TpRegisterPageModule' },
   { path: 'tp-add-post', loadChildren: './tp-add-post/tp-add-post.module#TpAddPostPageModule' },
+  { path: 'tp-posts', loadChildren: './tp-posts/tp-posts.module#TpPostsPageModule' },
 ];
 
 @NgModule({

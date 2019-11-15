@@ -18,10 +18,10 @@
               <ion-input name="email" type="email" placeholder="your@email.com" [(ngModel)]="email" required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input  name="username" type="text" placeholder="Username" ngModel required></ion-input>
+              <ion-input  name="username" type="text" placeholder="Username" [(ngModel)]="username" required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="password" type="password" placeholder="Password" ngModel required></ion-input>
+              <ion-input name="password" type="password" placeholder="Password" [(ngModel)]="password" required></ion-input>
             </ion-item>
             <ion-item>
               <ion-input name="confirm" type="password" placeholder="Password again" ngModel required></ion-input>
@@ -34,40 +34,10 @@
       </ion-row>
     </ion-grid>
   </form>
-  <form onsubmit="processForm(event)">
-    <ion-list lines="full" class="ion-no-margin ion-no-padding">
-      <ion-item>
-        <ion-label position="stacked">First Name <ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="text" oninput="handleFirstNameValue(event)"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Last Name <ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="text" oninput="handleLastNameValue(event)"></ion-input>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label position="floating">Title</ion-label>
-        <ion-input></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Address</ion-label>
-        <ion-input placeholder="Address Line 1"></ion-input>
-        <ion-input placeholder="Address Line 2"></ion-input>
-        <ion-input placeholder="City"></ion-input>
-        <ion-input placeholder="State"></ion-input>
-        <ion-input placeholder="Zip Code"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Notes</ion-label>
-        <ion-textarea></ion-textarea>
-      </ion-item>
-    </ion-list>
-
-    <div class="ion-padding">
-      <ion-button expand="block" type="submit" class="ion-no-margin">Create account</ion-button>
+  <ion-row color="primary" class="ion-justify-content-center">
+    <div class="ion-padding ion-align-self-center" size-md="6" size-lg="5" size-xs="12" >
+      <ion-button  size="small" type="submit" (click)="toLogin()">complete regitration</ion-button>
     </div>
-  </form>
+  </ion-row>
+
 </ion-content>
