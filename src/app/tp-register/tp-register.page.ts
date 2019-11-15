@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
-import { HttpClient } from '@angular/common/http';    
-import { HTTP } from '@ionic-native/http/ngx';
+import { HttpClient } from '@angular/common/http';
+// import { HTTP } from '@ionic-native/http/ngx';
+// import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs';
+// import 'rxjs/add/operator/map';
+
 
 @Component({
   selector: 'app-tp-register',
@@ -11,7 +15,9 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class TpRegisterPage implements OnInit {
   email = '';
 
-  constructor(private router: Router, private httpClient: HttpClient, private http: HTTP) { }
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
@@ -23,26 +29,34 @@ export class TpRegisterPage implements OnInit {
 
     this.httpClient.get('http://127.0.0.1:8000/api/user').subscribe(data => {
       console.log('my data: ', data);
+      console.log(data[0]);
+      console.log(data[0].id);
+      console.log(data[0].name);
+      console.log(data[0].age);
+
+
     });
 
+    // var headers = new Headers();
+    // headers.append("Accept", 'application/json');
+    // headers.append('Content-Type', 'application/json' );
+    // const requestOptions = new RequestOptions({ headers: headers });
+
+    const postData = {
+            "name": this.email,
+            "age": "23"
+    }
+
+    this.httpClient.post("http://127.0.0.1:8000/api/user", postData).subscribe(data => {
+        console.log(data);
+       }, error => {
+        console.log(error);
+      });
 
 
 
-  //   this.http.get('http://127.0.0.1:8000/api/user', {}, {})
-  // .then(data => {
 
-  //   console.log(data.status);
-  //   console.log(data.data); // data received by server
-  //   console.log(data.headers);
-
-  // })
-  // .catch(error => {
-
-  //   console.log(error.status);
-  //   console.log(error.error); // error message as string
-  //   console.log(error.headers);
-
-  // });
+ 
 
   }
 

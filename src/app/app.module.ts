@@ -13,6 +13,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP } from '@ionic-native/http/ngx';
+import { Observable } from 'rxjs';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { HTTP } from '@ionic-native/http/ngx';
     Geolocation,
     NativeGeocoder,
     HTTP,
+
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
