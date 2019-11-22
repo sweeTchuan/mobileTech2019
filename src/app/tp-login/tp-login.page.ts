@@ -25,7 +25,7 @@ export class TpLoginPage implements OnInit {
       console.log(data[0]);
 
     });
-    this.toPosts();
+    // this.toPosts();
   }
 
   toPosts() {

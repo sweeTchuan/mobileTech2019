@@ -25,7 +25,7 @@ export class Tp2Page implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadMap();
+    // this.loadMap();
   }
   loadMap() {
     this.geolocation

@@ -23,8 +23,10 @@ export class TpRegisterPage implements OnInit {
     const postData = {
       email: this.email,
       username: this.username,
-      password : this.password
-    }
+      password : this.password,
+      name : '',
+      action : 'create_user'
+    };
 
     this.httpClient.post('http://127.0.0.1:8000/api/user', postData).subscribe(data => {
         console.log(data);
@@ -36,8 +38,24 @@ export class TpRegisterPage implements OnInit {
   }
 
   toLogin() {
-
+    
     this.router.navigateByUrl('tp-login');
+  }
+
+  testingAPI(){
+    // this.httpClient.post('http://127.0.0.1:8000/api/testingp', postData).subscribe(data => {
+    //     console.log(data);
+    //     this.router.navigateByUrl('tp-login');
+    //    }, error => {
+    //     console.log(error);
+    // });
+
+    // this.httpClient.get('http://127.0.0.1:8000/api/testingg').subscribe(data => {
+    //     console.log(data);
+    //     this.router.navigateByUrl('tp-login');
+    //    }, error => {
+    //     console.log(error);
+    // });
   }
 
 }

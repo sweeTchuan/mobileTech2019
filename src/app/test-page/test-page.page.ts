@@ -18,13 +18,13 @@ export class TestPagePage implements OnInit {
 
   leafletMap() {
     // In setView add latLng and zoom
-    this.map = new Map('mapId').setView([28.644800, 77.216721], 10);
+    this.map = new Map('mapId').setView([3.128307, 101.7144225], 10);
     tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'edupala.com © ionic LeafLet',
+      attribution: '© ionic LeafLet',
     }).addTo(this.map);
 
 
-    marker([28.6, 77]).addTo(this.map)
+    marker([3.128307,  101.7144225]).addTo(this.map)
       .bindPopup('Ionic 4 <br> Leaflet.')
       .openPopup();
   }

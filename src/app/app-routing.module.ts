@@ -12,6 +12,8 @@ const routes: Routes = [
   { path: 'tp-register', loadChildren: './tp-register/tp-register.module#TpRegisterPageModule' },
   { path: 'tp-add-post', loadChildren: './tp-add-post/tp-add-post.module#TpAddPostPageModule' },
   { path: 'tp-posts', loadChildren: './tp-posts/tp-posts.module#TpPostsPageModule' },
+  { path: 'tp-media', loadChildren: './tp-media/tp-media.module#TpMediaPageModule' },
+  { path: 'start', loadChildren: './tabs/tabs.module#TabsPageModule' },
 ];
 
 @NgModule({

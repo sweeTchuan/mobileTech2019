@@ -1,9 +1,30 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>tp-addPost</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-title>New post</ion-title>
+        <ion-buttons slot="end">Share
+            <ion-icon name="share-alt" size="large"></ion-icon>
+        </ion-buttons>
+
+    </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+
+<ion-content class="ion-padding">
+
+    <ion-grid>
+        <ion-row class="ion-justify-content-center">
+            <ion-col class="ion-align-self-center" size-lg="5" size-md="6" size-xs="12">
+                <ion-img height="80px" src="/assets/testpic.jpg" width="80px"></ion-img>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-item>
+        <ion-label position="floating">Caption</ion-label>
+        <ion-textarea auto-grow="auto-grow" placeholder="Write a caption"></ion-textarea>
+    </ion-item>
 </ion-content>
+

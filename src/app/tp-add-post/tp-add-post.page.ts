@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tp-add-post.page.scss'],
 })
 export class TpAddPostPage implements OnInit {
+  postImage;
 
   constructor() { }
 
   ngOnInit() {
+    this.postImage = '/assets/testc1.jpg';
   }
 
 }

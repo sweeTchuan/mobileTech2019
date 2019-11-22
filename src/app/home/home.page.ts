@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  async navTabs(){
+    //you can use either of below
+    this.router.navigateByUrl('/tabs/(home:home)');
+    //this.navCtrl.navigateRoot('/app/tabs/(home:home)')
+}
 
 }
