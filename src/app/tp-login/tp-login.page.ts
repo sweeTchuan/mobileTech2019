@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { GlobalSettingsService } from '../Services/global-settings.service';
+
 @Component({
   selector: 'app-tp-login',
   templateUrl: './tp-login.page.html',
@@ -11,25 +13,63 @@ export class TpLoginPage implements OnInit {
 
   username: '';
   password: '';
+
   constructor(
     private httpClient: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private global: GlobalSettingsService) { }
 
   ngOnInit() {
+
   }
+
   login() {
-    console.log('login function');
+    console.log('=> login function');
+    const postData = {
+      username: this.username,
+      password : this.password,
+      action : 'login_user'
+    };
 
-    this.httpClient.get('http://127.0.0.1:8000/api/user').subscribe(data => {
-      console.log('my data: ', data);
-      console.log(data[0]);
+    this.httpClient.post(this.global.ApiPath('user'), postData).subscribe(data => {
+      console.log('Request data => ', data);
 
+      if(data['status'] === 1) {
+        this.toPosts();
+      }
+
+    }, error => {
+      console.log(error);
     });
-    // this.toPosts();
+
   }
 
   toPosts() {
-    this.router.navigateByUrl('tp-posts');
+    this.router.navigateByUrl('start');
+  }
+
+  testGetAPI(){
+    console.log('testing GET API')
+    this.httpClient.get('http://' + this.global.apiIp + '/api-for-mobile-tech/public/api/testingg').subscribe(data => {
+        console.log(data);
+       }, error => {
+        console.log(error);
+    });
+
+  }
+
+  testPostAPI(){
+    console.log('testing POST API')
+    const postData = {
+
+    };
+    this.httpClient.post('http://' + this.global.apiIp + '/api-for-mobile-tech/public/api/testingp', postData).subscribe(data => {
+        console.log(data);
+       }, error => {
+        console.log(error);
+    });
+
+
   }
 
 }

@@ -26,6 +26,12 @@
           <div class="ion-padding">
             <ion-button size="small" color="secondary"[routerLink]="['/tp-register']" routerLinkActive="router-link-active" >register</ion-button>
           </div>
+          <div class="ion-padding ion-align-self-center" size-md="6" size-lg="5" size-xs="12" >
+            <ion-button  size="small" (click)="testGetAPI()">test GET API</ion-button>
+          </div>
+          <div class="ion-padding ion-align-self-center" size-md="6" size-lg="5" size-xs="12" >
+            <ion-button  size="small"  (click)="testPostAPI()">test POST API</ion-button>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { GlobalSettingsService } from '../Services/global-settings.service';
+
 @Component({
   selector: 'app-tp-register',
   templateUrl: './tp-register.page.html',
@@ -14,12 +16,15 @@ export class TpRegisterPage implements OnInit {
 
   constructor(
     private router: Router,
-    private httpClient: HttpClient) { }
+    private httpClient: HttpClient,
+    private global: GlobalSettingsService) { }
 
   ngOnInit() {
   }
 
   register() {
+    console.log('=> register function');
+
     const postData = {
       email: this.email,
       username: this.username,
@@ -28,9 +33,11 @@ export class TpRegisterPage implements OnInit {
       action : 'create_user'
     };
 
-    this.httpClient.post('http://127.0.0.1:8000/api/user', postData).subscribe(data => {
-        console.log(data);
-        this.router.navigateByUrl('tp-login');
+
+    this.httpClient.post(this.global.ApiPath('user'), postData).subscribe(data => {
+        console.log('request data => ' , data);
+        this.toLogin();
+
        }, error => {
         console.log(error);
     });
@@ -38,24 +45,18 @@ export class TpRegisterPage implements OnInit {
   }
 
   toLogin() {
-    
+
     this.router.navigateByUrl('tp-login');
   }
 
   testingAPI(){
-    // this.httpClient.post('http://127.0.0.1:8000/api/testingp', postData).subscribe(data => {
-    //     console.log(data);
-    //     this.router.navigateByUrl('tp-login');
-    //    }, error => {
-    //     console.log(error);
-    // });
+    // let ipAddress = '172.21.6.33';  // check ipconfig
+    // let laravelProjectName = 'blog';
+    // let apiName = 'user';
+    // let apiPath = '/' + laravelProjectName + '/public/api/' + apiName; 
+    // let url = 'http://' + ipAddress + apiPath;
 
-    // this.httpClient.get('http://127.0.0.1:8000/api/testingg').subscribe(data => {
-    //     console.log(data);
-    //     this.router.navigateByUrl('tp-login');
-    //    }, error => {
-    //     console.log(error);
-    // });
+    
   }
 
 }

@@ -20,10 +20,12 @@ import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+// import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Observable } from 'rxjs';
+
+import { GlobalSettingsService } from './Services/global-settings.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,8 +41,9 @@ import { Observable } from 'rxjs';
     StatusBar,
     SplashScreen,
     Geolocation,
-    NativeGeocoder,
+    // NativeGeocoder,
     HTTP,
+    GlobalSettingsService,
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     ImagePicker,
