@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Posts</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <ion-card [routerLink]="['/']" routerLinkActive="router-link-active"  *ngFor="let post of posts" >
+            
+            
+            <ion-card-header>
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                      <!-- <ion-thumbnail class=""> -->
+                          
+                          <ion-avatar>
+                              <img src="/assets/testpic.jpg">
+                              <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
+                          </ion-avatar>
+                      <!-- </ion-thumbnail> -->
+                  </ion-col>
+                  <ion-col>
+                      <ion-card-title>Username Here</ion-card-title>
+                  </ion-col>
+                  <ion-col>
+                      <ion-icon name="more" size="large"></ion-icon>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-card-subtitle>Location Here</ion-card-subtitle>
+                    </ion-col>
+                  </ion-row>
+                
+              </ion-grid>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+                <ion-col>
+                    <ion-img width="100px" height="100px" src="{{post.picture}}"></ion-img>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col>
+                      Username Here : Caption ...{{post.caption}}
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col>
+                      View Comments if got
+                  </ion-col>
+                </ion-row>
+                
+                
+            </ion-card-content>
+          </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+    
+
+</ion-content>
