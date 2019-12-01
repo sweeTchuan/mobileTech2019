@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'tp-login', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'test-page', loadChildren: './test-page/test-page.module#TestPagePageModule' },
   { path: 'tp2', loadChildren: './tp2/tp2.module#Tp2PageModule' },
@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'tp-posts', loadChildren: './tp-posts/tp-posts.module#TpPostsPageModule' },
   { path: 'tp-media', loadChildren: './tp-media/tp-media.module#TpMediaPageModule' },
   { path: 'start', loadChildren: './tabs/tabs.module#TabsPageModule' },
+  { path: 'tp-take-picture', loadChildren: './tp-take-picture/tp-take-picture.module#TpTakePicturePageModule' },
 ];
 
 @NgModule({

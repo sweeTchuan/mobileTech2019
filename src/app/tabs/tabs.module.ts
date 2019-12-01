@@ -18,6 +18,11 @@ const routes: Routes = [
         loadChildren: '../tp-posts/tp-posts.module#TpPostsPageModule'
       },
       {
+        path: 'addpost',
+        // outlet: 'tab2',
+        loadChildren: '../tp-add-post/tp-add-post.module#TpAddPostPageModule'
+      },
+      {
         path: 'profile',
         // outlet: 'tab2',
         loadChildren: '../tp-profile/tp-profile.module#TpProfilePageModule'

@@ -1,12 +1,33 @@
 <ion-header>
   <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
     <ion-title>
       Ionic Blank
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
+  <!-- <ion-button (click)="uploadFile()">Upload File
+
+  </ion-button>
+  <ion-label>
+{{uploadText}}
+  </ion-label>
+    <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let photo of photoService.photos">
+            <img [src]="photo.data" />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-fab-button (click)="photoService.takePicture()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-fab-button> -->
   <div class="ion-padding">
     The world is your oyster.
     <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
@@ -24,6 +45,7 @@
       <ion-button size="small" color="secondary"[routerLink]="['/tp-add-post']" routerLinkActive="router-link-active" >add post</ion-button>
       <ion-button size="small" color="secondary" [routerLink]="['/tp-profile']" routerLinkActive="router-link-active">profile</ion-button>
       <ion-button size="small" color="secondary" [routerLink]="['/start']" routerLinkActive="router-link-active">Tabs</ion-button>
+      <ion-button size="small" color="secondary" [routerLink]="['/tp-take-picture']" routerLinkActive="router-link-active">test image</ion-button>
       
     </div>
     <div class="ion-padding">

@@ -182,6 +182,7 @@ export class TpMediaPage implements OnInit {
       this.streamingMedia.playVideo(f.nativeURL);
     } else if (f.name.indexOf('.jpg') > -1) {
       // E.g: Use the Photoviewer to present an Image
+      console.log('file native url', f.nativeURL);
       this.photoViewer.show(f.nativeURL, 'MY awesome image');
     }
   }

@@ -3,6 +3,7 @@ import { Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { GlobalSettingsService } from '../Services/global-settings.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tp-register',
@@ -17,7 +18,8 @@ export class TpRegisterPage implements OnInit {
   constructor(
     private router: Router,
     private httpClient: HttpClient,
-    private global: GlobalSettingsService) { }
+    private global: GlobalSettingsService,
+    private loading: LoadingController) { }
 
   ngOnInit() {
   }
@@ -32,9 +34,10 @@ export class TpRegisterPage implements OnInit {
       name : '',
       action : 'create_user'
     };
+    this.presentLoadingWithOptions();
 
 
-    this.httpClient.post(this.global.ApiPath('user'), postData).subscribe(data => {
+    this.httpClient.post(this.global.fn_ApiURL('user'), postData).subscribe(data => {
         console.log('request data => ' , data);
         this.toLogin();
 
@@ -47,6 +50,29 @@ export class TpRegisterPage implements OnInit {
   toLogin() {
 
     this.router.navigateByUrl('tp-login');
+  }
+
+  async presentLoading() {
+    const loading = await this.loading.create({
+      message: 'Hellooo',
+      duration: 2000
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+
+    console.log('Loading dismissed!');
+  }
+
+  async presentLoadingWithOptions() {
+    const loading = await this.loading.create({
+      spinner: null,
+      duration: 5000,
+      message: 'Please wait...',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    return await loading.present();
   }
 
   testingAPI(){

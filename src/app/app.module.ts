@@ -10,6 +10,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { Camera } from '@ionic-native/camera/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/File/ngx';
@@ -26,6 +31,8 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { Observable } from 'rxjs';
 
 import { GlobalSettingsService } from './Services/global-settings.service';
+import { ActionSheetController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,10 +47,17 @@ import { GlobalSettingsService } from './Services/global-settings.service';
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
+    FilePath,
+    FileChooser,
+    FileTransfer,
     Geolocation,
+    WebView,
     // NativeGeocoder,
     HTTP,
     GlobalSettingsService,
+    ActionSheetController,
+    AlertController,
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     ImagePicker,
