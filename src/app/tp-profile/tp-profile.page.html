@@ -1,8 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Profile</ion-title>
-    <ion-button [routerLink]="['/']" routerLinkActive="router-link-active">logout</ion-button>
-    <ion-button size="small" color="tertiary" [routerLink]="['/home']" routerLinkActive="router-link-active">home</ion-button>
+    <ion-title>{{txtUsername}}</ion-title>
+    <!-- <ion-button [routerLink]="['/']" routerLinkActive="router-link-active">logout</ion-button> -->
+    <ion-button size="small" slot="end" color="tertiary" [routerLink]="['/home']" routerLinkActive="router-link-active">home</ion-button>
+    <ion-button color="light" slot="end" (click)="logOut()">
+      <ion-label color="primary">Log Out</ion-label>
+      <ion-icon color="primary" name="log-out" size="default" slot="end"></ion-icon>
+  </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -11,7 +15,7 @@
         <ion-row>
           <ion-col>
               <ion-avatar>
-                  <img src="/assets/testpic.jpg">
+                  <img src="{{txtSrcProfileImage}}">
               </ion-avatar>
           </ion-col>
           <ion-col>

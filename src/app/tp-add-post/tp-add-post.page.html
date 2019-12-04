@@ -1,30 +1,20 @@
 <ion-header>
     <ion-toolbar>
-        <ion-buttons slot="start">
+        <!-- <ion-buttons slot="start">
             <ion-back-button defaultHref="/"></ion-back-button>
-        </ion-buttons>
+        </ion-buttons>-->
         <ion-title>New post</ion-title>
-        <ion-buttons slot="end" (click)="startUpload()">Share
-            <ion-icon name="share-alt" size="large"></ion-icon>
-        </ion-buttons>
-
+        <ion-button color="light" slot="end" (click)="prepareUpload()">
+            <ion-label color="primary">Share</ion-label>
+            <ion-icon color="primary" name="share-alt" size="default" slot="end"></ion-icon>
+        </ion-button>
     </ion-toolbar>
 </ion-header>
-
-
-<ion-content
-    class="ion-padding">
-    <!-- <ion-fab horizontal="start" slot="fixed" vertical="top">
-            <ion-fab-button>
-                <ion-icon name="add"></ion-icon>
-            </ion-fab-button>
-        </ion-fab> -->
-
+<ion-content class="ion-padding">
     <ion-grid>
-        <ion-row [hidden]="objTempImage.path === ''" class="ion-justify-content-center">
+        <ion-row [hidden]="isNoImage" class="ion-justify-content-center">
             <ion-col class="ion-align-self-center" size-lg="5" size-md="6" size-xs="12">
-                <ion-img [src]="objTempImage.path"></ion-img>
-
+                <ion-img [src]="txtSrcImage"></ion-img>
             </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-center">
@@ -32,7 +22,8 @@
                 <ion-button>
                     <ion-button (click)="selectImage()" color="light" expand="block" fill="clear">
                         <ion-icon name="camera" slot="start"></ion-icon>
-                        {{txtImageButton}}</ion-button>
+                        {{txtImageButton}}
+                    </ion-button>
                 </ion-button>
             </ion-col>
         </ion-row>
@@ -40,11 +31,12 @@
             <ion-col class="ion-align-self-center" size-lg="5" size-md="6" size-xs="12">
                 <ion-item>
                     <ion-label position="floating">Caption</ion-label>
-                    <ion-textarea auto-grow="auto-grow" placeholder="Write a caption"></ion-textarea>
+                    <ion-textarea auto-grow="auto-grow" placeholder="Write a caption" [(ngModel)]="txtCaption">
+                    </ion-textarea>
                 </ion-item>
             </ion-col>
 
         </ion-row>
     </ion-grid>
-    
+
 </ion-content>

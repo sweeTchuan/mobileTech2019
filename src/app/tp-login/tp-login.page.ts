@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { GlobalSettingsService } from '../Services/global-settings.service';
-import { AlertController, Platform, LoadingController } from '@ionic/angular';
+import { AlertController, Platform, LoadingController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 import { Observable } from 'rxjs';
@@ -29,10 +29,13 @@ export class TpLoginPage implements OnInit {
     private global: GlobalSettingsService,
     private alertController: AlertController,
     private storage: Storage,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    public navCtrl: NavController,
   ) { }
 
   ngOnInit() {
+    console.log('test seq => ngOnInit');
+
     this.plt.ready().then(() => {
       this.checkApiStatus();
       this.checkUserIsLogin();
@@ -77,14 +80,19 @@ export class TpLoginPage implements OnInit {
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: 'Signing In',
-      // duration: 2000
+      duration: 30000
     });
     await loading.present();
 
   }
 
   toPosts() {
-    this.router.navigateByUrl('start');
+    // this.router.navigateByUrl('start');
+    // this.navCtrl.navigateRoot('start');
+    // this.router.dispose();
+    // this.router.navigateByUrl('start', { skipLocationChange: true });
+    // this.router.navigateByUrl('start');
+    this.router.navigateByUrl('start', { replaceUrl: true });
   }
 
   setLoginUser(data) {
@@ -114,11 +122,12 @@ export class TpLoginPage implements OnInit {
 
   checkUserIsLogin(){
     this.storage.get('currentUser').then((val) => {
-      let user: User = val;
-      if(user.isLogin == true){
-        this.toPosts();
+      if (val != null){
+        let user: User = val;
+        if(user.isLogin == true ){
+          this.toPosts();
+        }
       }
-
     });
   }
 
@@ -164,7 +173,15 @@ export class TpLoginPage implements OnInit {
             this.storage.set('laravelProject', data.LaravelProjectName);
             this.global.fn_changeApiIP(data.ipAddress);
             this.global.fn_changeLaravelProject(data.LaravelProjectName);
+            this.checkApiStatus();
             console.log('Confirm Ok');
+          }
+        },{
+          text: 'Admin',
+          handler: data => {
+
+            this.toPosts();
+            console.log('skip login');
           }
         }
       ]
@@ -181,9 +198,12 @@ export class TpLoginPage implements OnInit {
         setTimeout(() => {
           this.isCheckingApi = false;
         }, 3000);
+      }else {
+        this.isCheckingApi = true;
       }
     }, error => {
       console.log(error);
+      this.isCheckingApi = true;
     });
   }
 
