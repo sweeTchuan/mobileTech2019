@@ -220,7 +220,7 @@ export class TpAddPostPage implements OnInit {
   }
 
   prepareUpload() {
-    console.log('=> prepareLogin');
+    console.log('=> prepareUpload');
 
   }
 
