@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Profile</ion-title>
+    <ion-icon class="ion-padding" name="checkmark" slot="end" size="large" color="primary" (click)="updateProfile()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-align-self-center">
+        <div class="ion-text-center ion-padding">
+          <img class="avatar" src="{{txtSrcProfileImage}}">
+        </div>
+        <div class="ion-text-center">
+          <ion-button size="small" fill="outline" class="" (click)="changeProfilePhoto()">Change Profile Photo
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="">
+      <ion-col class="">
+        <ion-item>
+          <ion-label position="floating">Name</ion-label>
+          <ion-input [(ngModel)]="txtName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Username</ion-label>
+          <ion-input [(ngModel)]="txtUsername"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email address</ion-label>
+          <ion-input [(ngModel)]="txtEmail"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

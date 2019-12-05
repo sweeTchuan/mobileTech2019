@@ -3,3 +3,19 @@
     
     
 }
+ion-avatar {
+    width: 70px;  
+    height: 70px;  
+}
+
+.width-full {
+    width: 100%;  
+}
+
+// https://stackoverflow.com/questions/55559699/how-to-setup-maximum-lines-of-ion-label
+.questionText {
+    max-height: 5.4em;
+    line-height: 1.8em;
+    height: 75%;
+    white-space: normal;
+    }

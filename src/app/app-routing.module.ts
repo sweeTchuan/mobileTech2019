@@ -15,6 +15,8 @@ const routes: Routes = [
   { path: 'tp-media', loadChildren: './tp-media/tp-media.module#TpMediaPageModule' },
   { path: 'start', loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'tp-take-picture', loadChildren: './tp-take-picture/tp-take-picture.module#TpTakePicturePageModule' },
+  { path: 'tp-edit-profile', loadChildren: './tp-edit-profile/tp-edit-profile.module#TpEditProfilePageModule' },
+  { path: 'tp-one-post', loadChildren: './tp-one-post/tp-one-post.module#TpOnePostPageModule' },
 ];
 
 @NgModule({

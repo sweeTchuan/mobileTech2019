@@ -176,12 +176,12 @@ export class TpAddPostPage implements OnInit {
       // this.images = [newEntry, ...this.images];
 
       // this.objTempImage = newEntry;
-      
+
       this.objTempImage.name = name;
       this.objTempImage.path = resPath;
       this.objTempImage.filePath = filePath;
       this.updateAddPostView();
-      
+
     });
   }
 
@@ -196,7 +196,7 @@ export class TpAddPostPage implements OnInit {
     await alert.present();
   }
 
-  updateAddPostView(){
+  updateAddPostView() {
     this.txtSrcImage = this.objTempImage.path;
     this.isNoImage = false;
     this.txtImageButton = 'Change Image';
@@ -219,7 +219,7 @@ export class TpAddPostPage implements OnInit {
     });
   }
 
-  prepareUpload(){
+  prepareUpload() {
     console.log('=> prepareLogin');
 
   }
@@ -266,23 +266,23 @@ export class TpAddPostPage implements OnInit {
     await loading.present();
     console.log('check complete');
 
-    //   this.http.post("http://localhost:8888/upload.php", formData)
-    // this.http.post(this.global.fn_ApiURL('newpost'), formData)
-    //     .pipe(
-    //         finalize(() => {
-    //             loading.dismiss();
-    //         })
-    //     )
-    //     .subscribe(res => {
-    //         if (res['success']) {
-    //             this.presentToast('File upload complete.')
-    //              this.toast.dismiss().then( () => {
-    //                this.router.navigateByUrl('/start/tabs/posts');
-    //              });
-    //         } else {
-    //             this.presentToast('File upload failed.')
-    //         }
-    //     });
+    // this.http.post("http://localhost:8888/upload.php", formData)
+    this.http.post(this.global.fn_ApiURL('newpost'), formData)
+      .pipe(
+        finalize(() => {
+          loading.dismiss();
+        })
+      )
+      .subscribe(res => {
+        if (res['success']) {
+          this.presentToast('File upload complete.')
+          this.toastController.dismiss().then(() => {
+            this.router.navigateByUrl('/start/tabs/posts');
+          });
+        } else {
+          this.presentToast('File upload failed.')
+        }
+      });
 
   }
 

@@ -2,73 +2,92 @@
   <ion-toolbar>
     <ion-title>{{txtUsername}}</ion-title>
     <!-- <ion-button [routerLink]="['/']" routerLinkActive="router-link-active">logout</ion-button> -->
-    <ion-button size="small" slot="end" color="tertiary" [routerLink]="['/home']" routerLinkActive="router-link-active">home</ion-button>
+    <ion-button size="small" slot="end" color="tertiary" [routerLink]="['/home']" routerLinkActive="router-link-active">
+      home</ion-button>
     <ion-button color="light" slot="end" (click)="logOut()">
       <ion-label color="primary">Log Out</ion-label>
       <ion-icon color="primary" name="log-out" size="default" slot="end"></ion-icon>
-  </ion-button>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-grid class="ion-padding">
-        <ion-row>
-          <ion-col>
-              <ion-avatar>
-                  <img src="{{txtSrcProfileImage}}">
-              </ion-avatar>
-          </ion-col>
-          <ion-col>
-            <ion-row>
-                Posts
-            </ion-row>
-            <ion-row>
-                100
-            </ion-row>
-          </ion-col>
-          <ion-col>
-              <ion-row>
-                  Followers
-              </ion-row>
-              <ion-row>
-                  999
-              </ion-row>
-          </ion-col>
-          <ion-col>
-              <ion-row>
-                  Following
-              </ion-row>
-              <ion-row>
-                  1111
-              </ion-row>
-          </ion-col>
-        </ion-row>
-    </ion-grid>
-    
-      
-    
-<!-- first set should be a row -->
+
+  <ion-grid class="ion-padding" size-md="6" size-lg="6" size-xs="12">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-md="3" size-lg="3" size-xs="4">
+        <ion-item lines="none">
+          <ion-avatar>
+            <img src="{{txtSrcProfileImage}}">
+          </ion-avatar>
+        </ion-item>
+      </ion-col>
+      <ion-col class="" size-md="3" size-lg="3" size-xs="8">
+        <div class="ion-text-center">
+          <ion-text>
+            <h5>Post</h5>
+          </ion-text>
+          <ion-text>
+            <h5>0</h5>
+          </ion-text>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-justify-content-center" size-md="6" size-lg="6" size-xs="12">
+        <ion-button size="small" expand="block" fill="outline" class="" (click)="editProfile()">edit Profile
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 
 
-<ion-segment color="primary">
-  <ion-segment-button value="posts" selected>
-    <ion-icon name="grid"></ion-icon>    
-  </ion-segment-button>
-  <ion-segment-button value="tagged">
+  <!-- first set should be a row -->
+
+
+
+  <!-- <ion-segment color="primary">
+    <ion-segment-button value="posts" selected>
+      <ion-icon name="grid"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="tagged">
       <ion-icon name="contacts"></ion-icon>
     </ion-segment-button>
-  <ion-segment-button value="bookmark">
-    <ion-icon name="bookmark"></ion-icon>
-  </ion-segment-button>
-</ion-segment>
+    <ion-segment-button value="bookmark">
+      <ion-icon name="bookmark"></ion-icon>
+    </ion-segment-button>
+  </ion-segment> -->
 
-<ion-grid >
-  <ion-row >
-      
-      <ion-col col-4 >
-        <img src="/assets/testpic.jpg">
-      </ion-col>
-  </ion-row>
-</ion-grid>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="" size-md="6" size-lg="5" size-xs="12">
+        <ion-list class="">
+      <ion-item class="" *ngFor="let post of posts; let i= index" (click)="goToPost(post, i)" lines="none" >
+        <ion-card class="width-full" (click)="goToPost()" >
+          <ion-item class="">
+              <ion-thumbnail slot="start">
+                  <img src="{{post.pictureUrl}}">
+                </ion-thumbnail>
+                <ion-card-content>
+                    <ion-label class="questionText" >{{post.caption}}</ion-label>
+              <ion-button></ion-button>
+                  </ion-card-content>
+                
+              
+          </ion-item>
+          <ion-datetime id="dynamicDisabled" readonly="true" displayFormat="DDDD MMM D, YYYY" disabled
+              value="{{post.date}}"></ion-datetime>
+
+          
+
+        </ion-card>
+      </ion-item>
+
+
+    </ion-list>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
+  
 </ion-content>
