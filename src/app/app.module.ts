@@ -34,6 +34,7 @@ import { GlobalSettingsService } from './Services/global-settings.service';
 import { ActionSheetController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -42,7 +43,7 @@ import { AlertController } from '@ionic/angular';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
   ],
   providers: [
     StatusBar,

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { GlobalSettingsService } from '../Services/global-settings.service';
 import { Storage } from '@ionic/storage';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-tp-posts',
@@ -18,11 +19,24 @@ export class TpPostsPage implements OnInit {
     private router: Router,
     private global: GlobalSettingsService,
     private storage: Storage,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private plt: Platform,
   ) { }
 
   ngOnInit() {
-    this.loadPosts();
+    console.log('ngOnInit: PostsPage');
+    this.plt.ready().then(() => {
+      this.loadPosts();
+    });
+  }
+
+  ionViewWillEnter() {
+    console.log('ionviewwillenter: PostsPage');
+  }
+
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter: PostsPage');
+
   }
 
   async loadPosts() {
@@ -39,7 +53,7 @@ export class TpPostsPage implements OnInit {
         if (obj.user.user_profile_pic == null || obj.user.user_profile_pic == '') {
           postObj.userProfileUrl = '/assets/instagram.png';
         } else {
-          postObj.userProfileUrl = obj.user.user_profile_pic;
+          postObj.userProfileUrl = this.global.fn_imageURL(obj.user.user_profile_pic);
         }
         this.posts.push(postObj);
         this.ref.detectChanges();
@@ -49,6 +63,24 @@ export class TpPostsPage implements OnInit {
     }, error => {
       console.log(error);
     });
+
+  }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.reloadPostsData();
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
+
+  reloadPostsData() {
+    while (this.posts.length > 0) {
+      this.posts.pop();
+    }
+    this.loadPosts();
 
   }
 

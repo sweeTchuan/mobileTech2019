@@ -17,6 +17,7 @@ const routes: Routes = [
   // { path: 'tp-take-picture', loadChildren: './tp-take-picture/tp-take-picture.module#TpTakePicturePageModule' },
   { path: 'tp-edit-profile', loadChildren: './tp-edit-profile/tp-edit-profile.module#TpEditProfilePageModule' },
   { path: 'tp-one-post', loadChildren: './tp-one-post/tp-one-post.module#TpOnePostPageModule' },
+  { path: 'tp-upload-profile-pic', loadChildren: './tp-upload-profile-pic/tp-upload-profile-pic.module#TpUploadProfilePicPageModule' },
 ];
 
 @NgModule({

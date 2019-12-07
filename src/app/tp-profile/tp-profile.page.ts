@@ -3,11 +3,9 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 
 import { User } from '../Models/User';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { GlobalSettingsService } from '../Services/global-settings.service';
-import { isNull } from 'util';
-import { Post } from '../Models/post';
-import { HttpClient } from '@angular/common/http';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-tp-profile',
@@ -17,51 +15,56 @@ import { HttpClient } from '@angular/common/http';
 export class TpProfilePage implements OnInit {
   objUser: User;
   txtUsername: string;
-  txtSrcProfileImage: string;
-  posts = [];
-  
+  txtSrcProfileImage: string = this.global.DefaultProfilePic;
+  txtName: string;
+  txtEmail: string;
+
   constructor(
     private router: Router,
     private storage: Storage,
     public navCtrl: NavController,
     private global: GlobalSettingsService,
     private ref: ChangeDetectorRef,
-    private http: HttpClient
+    private plt: Platform,
 
   ) { }
 
   ngOnInit() {
-    this.storage.get('currentUser').then((val) => {
-      if(val != null){
-        console.log('storage: profile user => ', val);
-        this.objUser = val;
-      }
+    console.log('ngOnInit: ProfilePage');
+    this.plt.ready().then(() => {
+      this.storage.get('currentUser').then((val) => {
+        if (val != null || !val.isUndefined) {
+          console.log('storage: profile user => ', val);
+          this.objUser = val;
+          this.loadUserDetails();
+        }
+      });
     });
-    this.loadPosts();
+
   }
-  ionViewWillEnter(){
-    console.log('ionviewwillenter profile');
-    this.loadUser();
+  ionViewWillEnter() {
+    console.log('ionviewwillenter: ProfilePage');
+    console.log('storage: objUser => ', this.objUser);
+  }
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter: ProfilePage');
+    console.log('storage: objUser => ', this.objUser);
+    this.loadUserDetails();
+
   }
 
-  loadUser(){
-    this.txtUsername = isNull(this.objUser.username) ? 'Profile' : this.objUser.username;
-    if(this.objUser.profilePicUrl == null){
-      console.log('where u go');
-      this.txtSrcProfileImage = this.global.DefaultProfilePic;
-    } else {
-      console.log('where u go2',this.objUser.profilePicUrl);
-      this.txtSrcProfileImage = this.objUser.profilePicUrl;
+  loadUserDetails() {
+    this.txtUsername = isNullOrUndefined(this.objUser.username) ? '' : this.objUser.username;
+    if (!isNullOrUndefined(this.objUser.profilePicUrl) && this.objUser.profilePicUrl !== '') {
+      this.txtSrcProfileImage = this.global.fn_imageURL(this.objUser.profilePicUrl);
+      console.log('loadUserDetails: picURL=> ', this.txtSrcProfileImage);
     }
-
+    this.txtName = isNullOrUndefined(this.objUser.name) ? '' : this.objUser.name;
+    this.txtEmail = isNullOrUndefined(this.objUser.email) ? '' : this.objUser.email;
+    this.ref.detectChanges();
   }
 
-  logOut(){
-    // this.storage.get('currentUser').then((val: User ) => {
-    //   val.isLogin = false;
-    //   this.storage.set('currentUser', val);
-
-    // });
+  logOut() {
     this.storage.remove('currentUser').then(val => {
       // this.navCtrl.pop();
       // this.navCtrl.navigateBack('tp-login');
@@ -69,44 +72,12 @@ export class TpProfilePage implements OnInit {
       // this.router.dispose();
       this.router.navigateByUrl('', { replaceUrl: true });
       // this.router.navigateByUrl('tp-login');
-    });   
-    
-  }
-  
-  editProfile(){
-    this.router.navigateByUrl('tp-edit-profile');
-  }
-
-  async loadPosts() {
-    this.http.post(this.global.fn_ApiURL('getposts'), []).subscribe(data => {
-      console.log('request Posts data => ', data['data']);
-      for (let obj of data['data']) {
-        // console.log('i want username => ' , obj.user.username);
-        let postObj = new Post();
-        postObj.id = obj.id;
-        postObj.caption = obj.caption;
-        postObj.pictureUrl = this.global.fn_imageURL(obj.picture_url);
-        postObj.username = obj.user.username;
-        postObj.date = obj.created_at;
-        if (obj.user.user_profile_pic == null || obj.user.user_profile_pic == '') {
-          postObj.userProfileUrl = '/assets/instagram.png';
-        } else {
-          postObj.userProfileUrl = obj.user.user_profile_pic;
-        }
-        this.posts.push(postObj);
-        this.ref.detectChanges();
-        // console.log(obj.postObj);
-      }
-
-    }, error => {
-      console.log(error);
     });
 
   }
 
-  goToPost(poi, i){
-    console.log('wat',poi,i);
-    this.router.navigateByUrl('tp-one-post');
+  goToEditProfile() {
+    this.router.navigateByUrl('tp-edit-profile');
   }
 
 }

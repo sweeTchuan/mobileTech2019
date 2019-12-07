@@ -4,4 +4,5 @@ export class User {
     email: string;
     isLogin: boolean;
     profilePicUrl: string;
+    name: string;
 }

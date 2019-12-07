@@ -4,7 +4,7 @@
             <ion-back-button defaultHref="/"></ion-back-button>
         </ion-buttons>-->
         <ion-title>New post</ion-title>
-        <ion-button color="light" slot="end" (click)="prepareUpload()">
+        <ion-button color="light" fill="clear" slot="end" (click)="prepareUpload()" [hidden]="isNoImage">
             <ion-label color="primary">Share</ion-label>
             <ion-icon color="primary" name="share-alt" size="default" slot="end"></ion-icon>
         </ion-button>
@@ -19,12 +19,12 @@
         </ion-row>
         <ion-row class="ion-justify-content-center">
             <ion-col class="ion-align-self-center" size-lg="5" size-md="6" size-xs="12">
-                <ion-button>
-                    <ion-button (click)="selectImage()" color="light" expand="block" fill="clear">
+                <!-- <ion-button> -->
+                    <ion-button (click)="selectImage()" color="primary" expand="block" fill="outline">
                         <ion-icon name="camera" slot="start"></ion-icon>
                         {{txtImageButton}}
                     </ion-button>
-                </ion-button>
+                <!-- </ion-button> -->
             </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-center">

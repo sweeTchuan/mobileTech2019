@@ -1,21 +1,25 @@
-.profile-photo{
-    border-radius:50%;
-    
-    
+.profile-photo {
+  border-radius: 50%;
 }
 ion-avatar {
-    width: 70px;  
-    height: 70px;  
+  width: 70px;
+  height: 70px;
 }
-
+.avatar {
+  margin: auto;
+  // vertical-align: middle;
+  width: 120px;
+  height: 120px;
+  // border-radius: 50%;
+}
 .width-full {
-    width: 100%;  
+  width: 100%;
 }
 
 // https://stackoverflow.com/questions/55559699/how-to-setup-maximum-lines-of-ion-label
 .questionText {
-    max-height: 5.4em;
-    line-height: 1.8em;
-    height: 75%;
-    white-space: normal;
-    }
+  max-height: 5.4em;
+  line-height: 1.8em;
+  height: 75%;
+  white-space: normal;
+}

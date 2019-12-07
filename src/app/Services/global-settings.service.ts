@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage';
 })
 export class GlobalSettingsService {
 
-  devApiIp = '172.21.6.53';  // check ipconfig
+  devApiIp = '172.21.0.121';  // check ipconfig
   devlaravelProjectName = 'api-for-mobile-tech';
 
   apiIp = '';  // check ipconfig

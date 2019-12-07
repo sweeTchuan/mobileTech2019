@@ -34,12 +34,16 @@ export class TpLoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('test seq => ngOnInit');
+    console.log('ngOnInit: LoginPage');
 
     this.plt.ready().then(() => {
       this.checkApiStatus();
-      this.checkUserIsLogin();
+      // this.checkUserIsLogin();
     });
+
+  }
+  ionViewWillEnter(){
+    console.log('ionViewWillEnter: LoginPage');
 
   }
 
@@ -98,9 +102,11 @@ export class TpLoginPage implements OnInit {
   setLoginUser(data) {
     // console.log('login data',data);
     let objUser = new User();
-    objUser.id = data.id,
-      objUser.username = data.username;
+    objUser.id = data.id;
+    objUser.username = data.username;
     objUser.email = data.email;
+    objUser.name =  data.name;
+    objUser.profilePicUrl = data.pic_path_name;
     objUser.isLogin = true;
     this.storage.set('currentUser', objUser);
     console.log('setLoginUser obj => ', objUser);

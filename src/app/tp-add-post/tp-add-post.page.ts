@@ -23,12 +23,9 @@ const STORAGE_KEY = 'my_images';
   styleUrls: ['./tp-add-post.page.scss'],
 })
 export class TpAddPostPage implements OnInit {
-  // postImage;
-  // imgSrc;
-  // isHidden = false;
-  txtImageButton = 'Insert a image';
+
+  txtImageButton = 'Share a Photo!';
   txtCaption;
-  // images =[];
   objTempImage: Image;
   txtSrcImage;
   // imgTempPost;
@@ -54,10 +51,25 @@ export class TpAddPostPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.storage.get('currentUser').then((val: User) => {
-      this.objUser = val;
+    console.log('ngOnInit: AddPostsPage');
+    this.plt.ready().then( () => {
+      this.storage.get('currentUser').then((val: User) => {
+        this.objUser = val;
+        this.ref.detectChanges();
+      });
+      console.log('ngOnInit: this.objUser =>', this.objUser);
+
     });
     this.objTempImage = new Image();
+  }
+  ionViewWillEnter(){
+    console.log('ionviewwillenter: AddPostsPage');
+    console.log('ionviewwillenter: this.objUser =>', this.objUser);
+  }
+  ionViewDidEnter(){
+    console.log('ionViewDidEnter: AddPostsPage');
+    console.log('ionViewDidEnter: this.objUser =>', this.objUser);
+
   }
 
   pathForImage(img) {
@@ -199,11 +211,12 @@ export class TpAddPostPage implements OnInit {
   updateAddPostView() {
     this.txtSrcImage = this.objTempImage.path;
     this.isNoImage = false;
-    this.txtImageButton = 'Change Image';
+    this.txtImageButton = 'Change Photo';
     this.ref.detectChanges(); // trigger change detection cycle
   }
 
-  deleteImage(imgEntry, position) {
+  deleteImage(imgEntry) {
+  // deleteImage(imgEntry, position) {
     // this.images.splice(position, 1);
 
     this.storage.get(STORAGE_KEY).then(images => {
@@ -211,7 +224,7 @@ export class TpAddPostPage implements OnInit {
       let filtered = arr.filter(name => name != imgEntry.name);
       this.storage.set(STORAGE_KEY, JSON.stringify(filtered));
 
-      var correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
+      let correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
 
       this.file.removeFile(correctPath, imgEntry.name).then(res => {
         this.presentToast('File removed.');
@@ -221,7 +234,8 @@ export class TpAddPostPage implements OnInit {
 
   prepareUpload() {
     console.log('=> prepareUpload');
-
+    console.log('ATTENTION => need to do no image checking');
+    this.startUpload();
   }
 
   // startUpload(imgEntry) {
@@ -274,11 +288,12 @@ export class TpAddPostPage implements OnInit {
         })
       )
       .subscribe(res => {
-        if (res['success']) {
-          this.presentToast('File upload complete.')
-          this.toastController.dismiss().then(() => {
-            this.router.navigateByUrl('/start/tabs/posts');
-          });
+        console.log(res);
+        if (res['status']) {
+
+          this.presentToast('File upload complete.');
+          this.resetPage();
+          this.presentAlertPrompt();
         } else {
           this.presentToast('File upload failed.')
         }
@@ -286,11 +301,38 @@ export class TpAddPostPage implements OnInit {
 
   }
 
+  resetPage(){
+    this.deleteImage(this.objTempImage);
+    this.isNoImage = true;
+    this.txtCaption = '';
+    this.txtImageButton = 'Share a Photo!';
+  }
+
+  async presentAlertPrompt() {
+    const alert = await this.alertController.create({
+      header: 'Share a photo post',
+      subHeader: 'Successful',
+      message: 'Share new photo again?',
+      buttons: [
+        {
+          text: 'Yes',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Continue New Share Photo');
+          }
+        }, {
+          text: 'No',
+          handler: data => {
+            this.router.navigateByUrl('/start/tabs/posts');
+
+            console.log('Confirm Ok');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 }
-
-
-// class PostImage {
-//   name: string;
-//   path: string;
-//   filePath: string;
-// }
