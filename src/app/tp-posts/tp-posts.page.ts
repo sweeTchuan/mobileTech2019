@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { GlobalSettingsService } from '../Services/global-settings.service';
 import { Storage } from '@ionic/storage';
 import { Platform } from '@ionic/angular';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-tp-posts',
@@ -50,10 +51,11 @@ export class TpPostsPage implements OnInit {
         postObj.pictureUrl = this.global.fn_imageURL(obj.picture_url);
         postObj.username = obj.user.username;
         postObj.date = obj.created_at;
-        if (obj.user.user_profile_pic == null || obj.user.user_profile_pic == '') {
+        // if (obj.user.user_profile_pic == null || obj.user.user_profile_pic == '') {
+        if (isNullOrUndefined(obj.user.pic_path_name) || obj.user.pic_path_name === '') {
           postObj.userProfileUrl = '/assets/instagram.png';
         } else {
-          postObj.userProfileUrl = this.global.fn_imageURL(obj.user.user_profile_pic);
+          postObj.userProfileUrl = this.global.fn_imageURL(obj.user.pic_path_name);
         }
         this.posts.push(postObj);
         this.ref.detectChanges();
