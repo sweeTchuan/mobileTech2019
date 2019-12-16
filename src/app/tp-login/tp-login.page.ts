@@ -20,7 +20,7 @@ export class TpLoginPage implements OnInit {
 
   username = '';
   password = '';
-  isCheckingApi = true;
+  isCheckingApi = true; // toggle loading just to indicate connections status
 
   constructor(
     private plt: Platform,
@@ -38,7 +38,6 @@ export class TpLoginPage implements OnInit {
 
     this.plt.ready().then(() => {
       this.checkApiStatus();
-      // this.checkUserIsLogin();
     });
 
   }
@@ -47,6 +46,7 @@ export class TpLoginPage implements OnInit {
 
   }
 
+  // button to login procedure
   login() {
     console.log('=> login function');
 
@@ -72,6 +72,7 @@ export class TpLoginPage implements OnInit {
 
   }
 
+  // defining Post method input for login api
   prepareLogin(): Observable<object> {
     const postData = {
       username: this.username,
@@ -81,6 +82,7 @@ export class TpLoginPage implements OnInit {
     return this.httpClient.post(this.global.fn_ApiURL('user'), postData);
   }
 
+  // loading screen when signing in
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: 'Signing In',
@@ -91,14 +93,10 @@ export class TpLoginPage implements OnInit {
   }
 
   toPosts() {
-    // this.router.navigateByUrl('start');
-    // this.navCtrl.navigateRoot('start');
-    // this.router.dispose();
-    // this.router.navigateByUrl('start', { skipLocationChange: true });
-    // this.router.navigateByUrl('start');
     this.router.navigateByUrl('start', { replaceUrl: true });
   }
 
+  // save login user details from successful API results. 
   setLoginUser(data) {
     // console.log('login data',data);
     let objUser = new User();
@@ -110,11 +108,9 @@ export class TpLoginPage implements OnInit {
     objUser.isLogin = true;
     this.storage.set('currentUser', objUser);
     console.log('setLoginUser obj => ', objUser);
-    // this.storage.get('currentUser').then((val) => {
-    //   console.log('currentUser =>', val);
-    // });
   }
 
+  // login failed prompt
   async presentSignInAlertPrompt(msg) {
     const alert = await this.alertController.create({
       header: 'Signing In',
@@ -126,21 +122,8 @@ export class TpLoginPage implements OnInit {
     await alert.present();
   }
 
-  checkUserIsLogin(){
-    this.storage.get('currentUser').then((val) => {
-      if (val != null){
-        let user: User = val;
-        if(user.isLogin == true ){
-          this.toPosts();
-        }
-      }
-    });
-  }
-
-
-
+  // dev settings for own use instead of building again
   // for changing IP address and Laravel Project name
-
   changeIP() {
     console.log('change Server settings');
     this.presentAlertPrompt();
@@ -196,6 +179,7 @@ export class TpLoginPage implements OnInit {
     await alert.present();
   }
 
+  // for own use purpose to check connection status in app GUI to API
   checkApiStatus() {
 
     this.httpClient.post(this.global.fn_ApiURL('testingp'), {}).subscribe(data => {

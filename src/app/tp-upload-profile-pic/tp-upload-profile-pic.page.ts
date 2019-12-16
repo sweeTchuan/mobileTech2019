@@ -40,15 +40,16 @@ export class TpUploadProfilePicPage implements OnInit {
 
   txtSrcProfileImage;
   objTempImage: Image;
-  // objUser: User;
   txtCurrentUser;
   txtImageButton = 'Insert a Photo';
   savedSignUpUser;
-  notCompleteSignUp = true;
+  notCompleteSignUp = true;   // toggle 'Complete Sign up' button
 
   ngOnInit() {
     console.log('ngOnInit: UploadProfilePicPage');
     this.plt.ready().then(() => {
+
+      // load current sign up user details to this page
       this.storage.get('currentSignUpUser').then((val) => {
         this.savedSignUpUser = val;
         this.loadDetails();
@@ -57,12 +58,11 @@ export class TpUploadProfilePicPage implements OnInit {
 
     });
     this.objTempImage = new Image();
-    this.txtSrcProfileImage = '/assets/instagram.png';
+    this.txtSrcProfileImage = this.global.DefaultProfilePic;
   }
+
   ionViewWillEnter() {
     console.log('ionViewWillEnter: UploadProfilePicPage');
-
-
     console.log('view enter upload profile => ', this.txtCurrentUser);
   }
 
@@ -70,32 +70,15 @@ export class TpUploadProfilePicPage implements OnInit {
     this.loadDetails();
     console.log('view enter upload profile => ', this.txtCurrentUser);
   }
+
+  // making sure this page receive the saved current sign up user
   loadDetails() {
     this.txtCurrentUser = this.savedSignUpUser;
     this.ref.detectChanges();
   }
 
-  addProfilePhoto() {
-
-  }
   toLogin() {
-
     this.router.navigateByUrl('tp-login');
-  }
-
-  toPosts() {
-
-    // this.router.navigateByUrl('start', { replaceUrl: true });
-  }
-
-  pathForImage(img) {
-    console.log('=> pathForImage');
-    if (img === null) {
-      return '';
-    } else {
-      let converted = this.webview.convertFileSrc(img);
-      return converted;
-    }
   }
 
   async presentToast(text) {
@@ -108,6 +91,15 @@ export class TpUploadProfilePicPage implements OnInit {
 
   }
 
+  // =====================================================
+  // the following functions is modified based on tutorial
+  // - get image from camera and local file directory
+  // - creating, saving and extracting the image file path
+  // source:
+  // https://devdactic.com/ionic-4-image-upload-storage/
+  // =====================================================
+
+  // button function to select image
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image source',
@@ -132,10 +124,11 @@ export class TpUploadProfilePicPage implements OnInit {
     await actionSheet.present();
   }
 
+  // function that handles the selection of image from camera or local file
   takePicture(sourceType: PictureSourceType) {
     console.log('=> takePicture');
     let options: CameraOptions = {
-      quality: 20,
+      quality: 20,  // change this to modify quality of the image/size.
       sourceType: sourceType,
       saveToPhotoAlbum: false,
       correctOrientation: true
@@ -162,6 +155,7 @@ export class TpUploadProfilePicPage implements OnInit {
     });
 
   }
+
   createFileName() {
     console.log('=> createFileName');
     let d = new Date(),
@@ -179,6 +173,8 @@ export class TpUploadProfilePicPage implements OnInit {
     });
   }
 
+  // save the selected image in temperory storage.
+  // then update the view of profile pic
   updateStoredImages(name) {
     console.log('=> updateStoredImages');
     this.storage.get(STORAGE_KEY).then(images => {
@@ -196,15 +192,6 @@ export class TpUploadProfilePicPage implements OnInit {
       console.log('resPath => ', resPath);
       console.log('filePath => ', filePath);
 
-      // let newEntry = {
-      //   name: name,
-      //   path: resPath,
-      //   filePath: filePath
-      // };
-      // this.images = [newEntry, ...this.images];
-
-      // this.objTempImage = newEntry;
-
       this.objTempImage.name = name;
       this.objTempImage.path = resPath;
       this.objTempImage.filePath = filePath;
@@ -213,6 +200,17 @@ export class TpUploadProfilePicPage implements OnInit {
     });
   }
 
+  pathForImage(img) {
+    console.log('=> pathForImage');
+    if (img === null) {
+      return '';
+    } else {
+      let converted = this.webview.convertFileSrc(img);
+      return converted;
+    }
+  }
+
+  // prompt for selecting file that is not valid image format
   async invalidFileAlertPrompt(msg) {
     const alert = await this.alertController.create({
       header: 'Insert Image',
@@ -224,6 +222,7 @@ export class TpUploadProfilePicPage implements OnInit {
     await alert.present();
   }
 
+  // update the page view
   updateView() {
     this.txtSrcProfileImage = this.objTempImage.path;
     this.notCompleteSignUp = false;
@@ -231,14 +230,13 @@ export class TpUploadProfilePicPage implements OnInit {
     this.ref.detectChanges(); // trigger change detection cycle
   }
 
+  // button to start upload process
   updateProfilePic() {
     console.log('=> updateProfilePic');
     console.log(this.txtCurrentUser);
     this.startUpload();
-
   }
 
-  // startUpload(imgEntry) {
   startUpload() {
     console.log('=> startUpload ...');
 
@@ -254,6 +252,7 @@ export class TpUploadProfilePicPage implements OnInit {
       });
   }
 
+  // read image file and prepare Post method input
   readFile(file: any) {
     console.log('=> readFile');
     console.log('File =>', file);
@@ -264,7 +263,6 @@ export class TpUploadProfilePicPage implements OnInit {
         type: file.type
       });
       formData.append('image_profile', imgBlob, file.name);
-      // formData.append('caption', this.txtCaption);
       console.log('username =>', this.txtCurrentUser);
       formData.append('username', this.txtCurrentUser);
       formData.append('action', 'update_user_profile_pic');
@@ -274,15 +272,14 @@ export class TpUploadProfilePicPage implements OnInit {
     reader.readAsArrayBuffer(file);
   }
 
+  // upload image api, redirect to login page when success
   async uploadImageData(formData: FormData) {
     const loading = await this.loadingController.create({
       message: 'Uploading image...',
     });
 
     await loading.present();
-    console.log('check complete');
 
-    // this.http.post("http://localhost:8888/upload.php", formData)
     this.http.post(this.global.fn_ApiURL('user'), formData)
       .pipe(
         finalize(() => {
@@ -292,43 +289,13 @@ export class TpUploadProfilePicPage implements OnInit {
       .subscribe(res => {
         console.log('upload profile image=> ', res);
         if (res['status']) {
-          this.presentToast('Profile Photo upload complete.')
-          // this.toastController.dismiss().then(() => {
-          this.router.navigateByUrl('/tp-login');
-          this.presentAlertPrompt();
-          // });
+          this.presentToast('add Profile Photo Success.')
+          this.toLogin();
         } else {
           this.presentToast('Profile Photo upload failed.')
         }
       });
 
   }
-
-  async presentAlertPrompt() {
-    const alert = await this.alertController.create({
-      header: 'Add profile photo',
-      subHeader: 'Successful',
-      // message: 'Share new photo again?',
-      buttons: [
-        // {
-        //   text: 'Yes',
-        //   role: 'cancel',
-        //   cssClass: 'secondary',
-        //   handler: () => {
-        //     // console.log('Continue New Share Photo');
-        //   }
-        // },
-         {
-          text: 'Ok',
-          handler: data => {
-            // this.router.navigateByUrl('/start/tabs/posts');
-            this.toLogin();
-            console.log('Confirm Ok');
-          }
-        }
-      ]
-    });
-  }
-
 
 }

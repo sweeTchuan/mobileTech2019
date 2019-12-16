@@ -12,22 +12,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { Camera } from '@ionic-native/camera/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { FileChooser } from '@ionic-native/file-chooser/ngx';
-import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+// import { FileChooser } from '@ionic-native/file-chooser/ngx';
+// import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
+// import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/File/ngx';
-import { MediaCapture } from '@ionic-native/media-capture/ngx';
-import { Media } from '@ionic-native/media/ngx';
-import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
-import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
-import { Base64 } from '@ionic-native/base64/ngx';
+// import { MediaCapture } from '@ionic-native/media-capture/ngx';
+// import { Media } from '@ionic-native/media/ngx';
+// import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
+// import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+// import { Base64 } from '@ionic-native/base64/ngx';
 
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+// import { Geolocation } from '@ionic-native/geolocation/ngx';
 // import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { HttpClientModule } from '@angular/common/http';
-import { HTTP } from '@ionic-native/http/ngx';
+// import { HTTP } from '@ionic-native/http/ngx';
 import { Observable } from 'rxjs';
 
 import { GlobalSettingsService } from './Services/global-settings.service';
@@ -50,24 +50,24 @@ import { AlertController } from '@ionic/angular';
     SplashScreen,
     Camera,
     FilePath,
-    FileChooser,
-    FileTransfer,
-    Geolocation,
+    // FileChooser,
+    // FileTransfer,
+    // Geolocation,
     WebView,
     // NativeGeocoder,
-    HTTP,
+    // HTTP,
     GlobalSettingsService,
     ActionSheetController,
     AlertController,
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    ImagePicker,
-    MediaCapture,
+    // ImagePicker,
+    // MediaCapture,
     File,
-    Media,
-    StreamingMedia,
-    PhotoViewer,
-    Base64
+    // Media,
+    // StreamingMedia,
+    // PhotoViewer,
+    // Base64
   ],
   bootstrap: [AppComponent]
 })

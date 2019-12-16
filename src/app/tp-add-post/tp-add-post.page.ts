@@ -11,9 +11,7 @@ import { finalize } from 'rxjs/operators';
 import { GlobalSettingsService } from '../Services/global-settings.service';
 import { User } from '../Models/User';
 import { Router } from '@angular/router';
-// import { SelectImageService } from '../Services/select-image.service';
 import { Image } from '../Models/Image';
-// import { Observable } from 'rxjs';
 
 const STORAGE_KEY = 'my_images';
 
@@ -28,9 +26,8 @@ export class TpAddPostPage implements OnInit {
   txtCaption;
   objTempImage: Image;
   txtSrcImage;
-  // imgTempPost;
   objUser: User;
-  isNoImage = true;
+  isNoImage = true;   // toggle share button 
 
   constructor(
     private router: Router,
@@ -47,7 +44,6 @@ export class TpAddPostPage implements OnInit {
     private filePath: FilePath,
     private global: GlobalSettingsService,
     private alertController: AlertController,
-    // private imgSvc: SelectImageService,
   ) { }
 
   ngOnInit() {
@@ -72,6 +68,14 @@ export class TpAddPostPage implements OnInit {
 
   }
 
+  // =====================================================
+  // the following functions is modified based on tutorial
+  // - get image from camera and local file directory
+  // - creating, saving and extracting the image file path
+  // source:
+  // https://devdactic.com/ionic-4-image-upload-storage/
+  // =====================================================
+
   pathForImage(img) {
     console.log('=> pathForImage');
     if (img === null) {
@@ -92,6 +96,7 @@ export class TpAddPostPage implements OnInit {
 
   }
 
+  // button action to select photo from camera or file directory
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image source',
@@ -116,6 +121,7 @@ export class TpAddPostPage implements OnInit {
     await actionSheet.present();
   }
 
+  // function that handles the selection of image from camera or local file
   takePicture(sourceType: PictureSourceType) {
     console.log('=> takePicture');
     let options: CameraOptions = {
@@ -163,6 +169,8 @@ export class TpAddPostPage implements OnInit {
     });
   }
 
+  // save the selected image in temperory storage.
+  // then update the view of profile pic
   updateStoredImages(name) {
     console.log('=> updateStoredImages');
     this.storage.get(STORAGE_KEY).then(images => {
@@ -180,15 +188,6 @@ export class TpAddPostPage implements OnInit {
       console.log('resPath => ', resPath);
       console.log('filePath => ', filePath);
 
-      // let newEntry = {
-      //   name: name,
-      //   path: resPath,
-      //   filePath: filePath
-      // };
-      // this.images = [newEntry, ...this.images];
-
-      // this.objTempImage = newEntry;
-
       this.objTempImage.name = name;
       this.objTempImage.path = resPath;
       this.objTempImage.filePath = filePath;
@@ -197,6 +196,7 @@ export class TpAddPostPage implements OnInit {
     });
   }
 
+  // prompt for selecting file that is not valid image format
   async invalidFileAlertPrompt(msg) {
     const alert = await this.alertController.create({
       header: 'Insert Image',
@@ -208,6 +208,7 @@ export class TpAddPostPage implements OnInit {
     await alert.present();
   }
 
+  // update the page view when image is selected
   updateAddPostView() {
     this.txtSrcImage = this.objTempImage.path;
     this.isNoImage = false;
@@ -215,9 +216,8 @@ export class TpAddPostPage implements OnInit {
     this.ref.detectChanges(); // trigger change detection cycle
   }
 
+  // remove photo post image when finish upload post
   deleteImage(imgEntry) {
-  // deleteImage(imgEntry, position) {
-    // this.images.splice(position, 1);
 
     this.storage.get(STORAGE_KEY).then(images => {
       let arr = JSON.parse(images);
@@ -232,13 +232,13 @@ export class TpAddPostPage implements OnInit {
     });
   }
 
+  // button to start upload process
   prepareUpload() {
     console.log('=> prepareUpload');
     console.log('ATTENTION => need to do no image checking');
     this.startUpload();
   }
 
-  // startUpload(imgEntry) {
   startUpload() {
     console.log('=> startUpload ...');
 
@@ -254,6 +254,7 @@ export class TpAddPostPage implements OnInit {
       });
   }
 
+  // read image file and prepare Post method input
   readFile(file: any) {
     console.log('=> readFile');
     console.log('File =>', file);
@@ -272,15 +273,14 @@ export class TpAddPostPage implements OnInit {
     reader.readAsArrayBuffer(file);
   }
 
+  // upload image api
   async uploadImageData(formData: FormData) {
     const loading = await this.loadingController.create({
       message: 'Uploading image...',
     });
 
     await loading.present();
-    console.log('check complete');
 
-    // this.http.post("http://localhost:8888/upload.php", formData)
     this.http.post(this.global.fn_ApiURL('newpost'), formData)
       .pipe(
         finalize(() => {
@@ -301,6 +301,7 @@ export class TpAddPostPage implements OnInit {
 
   }
 
+  // reset the page views to enable new post
   resetPage(){
     this.deleteImage(this.objTempImage);
     this.isNoImage = true;
@@ -308,6 +309,9 @@ export class TpAddPostPage implements OnInit {
     this.txtImageButton = 'Share a Photo!';
   }
 
+  // prompt for options to 
+  // continue new post or go to login page
+  // after complete upload image and added new post to api
   async presentAlertPrompt() {
     const alert = await this.alertController.create({
       header: 'Share a photo post',

@@ -19,13 +19,17 @@ export class GlobalSettingsService {
   apiPath = '';
   imagesPath = '';
 
+  // just a random image set for default picture. for testing purposes 
   DefaultPictureURL = 'https://res.cloudinary.com/awesom3testing/image/upload/v1574921095/default-image_wjzajz.jpg';
+
   DefaultProfilePic = '/assets/instagram.png';
 
   constructor(
     private storage: Storage
   ) { }
 
+  // for own convenience purposes
+  // to set IP and laravel project name
   fn_initializeApiSettings() {
     this.fn_setApiIp();
     this.fn_setLaravelProject();
@@ -65,6 +69,7 @@ export class GlobalSettingsService {
     console.log('laravelProject change => ', this.laravelProject);
   }
 
+  // get URL of api
   fn_ApiURL(apiName) {
 
     let url = 'http://' + this.apiIp + this.apiPath + apiName;
@@ -73,6 +78,7 @@ export class GlobalSettingsService {
 
   }
 
+  // determine image path for view
   fn_imageURL(imageName) {
 
     if (imageName === 'defaultpic') {

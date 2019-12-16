@@ -27,10 +27,10 @@ export class TpRegisterPage implements OnInit {
   txtValidatePassword = '';
   txtValidateConfirm = '';
 
-  pattern = '[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})';
-
-
-
+  // regex pattern for email
+  // source : http://regexlib.com/Search.aspx?k=email&c=1&m=3&ps=20
+  pattern = '^([0-9a-zA-Z]([-.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$';
+  // pattern = '[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})';
 
   constructor(
     private router: Router,
@@ -42,69 +42,6 @@ export class TpRegisterPage implements OnInit {
     private alertController: AlertController,
   ) { }
 
-  // get username() {
-  //   return this.registrationForm.get("username");
-  // }
-  // get email() {
-  //   return this.registrationForm.get("email");
-  // }
-  // get name() {
-  //   return this.registrationForm.get("name");
-  // }
-  // get password(){
-  //   return this.registrationForm.get("password");
-
-  // }
-  // get confirm(){
-  //   return this.registrationForm.get("confirm");
-
-  // }
-
-  // registrationForm = this.formBuilder.group({
-  //   username: ['', [Validators.required, Validators.maxLength(100)]],
-  //   email: ['',
-  //   [
-  //     Validators.required,
-  //     Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')
-  //   ]],
-  //   password: ['',[Validators.required, Validators.maxLength(20)]],
-  //   name: ['', [ Validators.maxLength(100)]],
-  //   // confirm: ['', [Validators.required]]
-  // });
-
-  public errorMessages = {
-    username: [
-      { type: 'required', message: 'Username is required' },
-      { type: 'maxlength', message: 'Username cant be longer than 100 characters' }
-    ],
-    email: [
-      { type: 'required', message: 'Email is required' },
-      { type: 'pattern', message: 'Please enter a valid email address' }
-    ],
-    name: [
-      // { type: 'required', message: 'Phone number is required' },
-      { type: 'maxlength', message: 'Username cant be longer than 100 characters' }
-      // { type: 'pattern', message: 'Please enter a valid phone number' }
-    ],
-    password: [
-      { type: 'required', message: 'Password is required' },
-      // {
-      //   type: 'maxlength',
-      //   message: 'Street name cant be longer than 100 characters'
-      // }
-    ],
-    // confirm: [
-    //   { type: 'required', message: 'Password is required' },
-    //   // {
-    //   //   type: 'maxlength',
-    //   //   message: 'Street name cant be longer than 100 characters'
-    //   // }
-    // ],
-
-  };
-
-
-
   ngOnInit() {
     console.log('ngOnInit: RegisterPage');
   }
@@ -113,26 +50,10 @@ export class TpRegisterPage implements OnInit {
     console.log('ionviewwillenter: RegisterPage');
   }
 
-  submit() {
-    // console.log('submit =>',this.registrationForm.value);
-    // let postForm = this.registrationForm.value;
-
-    // // postForm.action = 'create_user';
-    // console.log('submit: action added => ',postForm);
-    // const postData = {
-    //   username: postForm.username,
-    //   email: postForm.email,
-    //   name : postForm.name,
-    //   password : postForm.password,
-    //   action : 'create_user'
-    // };
-    // this.register(postData);
-
-
-  }
+  // Sign Up button
+  // prepareRegister()->register()->toAddProfile()
   prepareRegister() {
     console.log('=> register function');
-
 
     this.presentLoading();
     this.register()
@@ -142,8 +63,8 @@ export class TpRegisterPage implements OnInit {
         })
       ).subscribe(data => {
         console.log('request data => ', data);
-        // this.toLogin();
 
+        // Results from received from laravel api
         if (data['status'] === 1) {
           this.toAddProfilePic();
         } else {
@@ -157,7 +78,7 @@ export class TpRegisterPage implements OnInit {
 
   }
 
-
+  // set required signup input for POST method to laravel api
   register(): Observable<object> {
     console.log('=> register ');
     const postData = {
@@ -168,20 +89,19 @@ export class TpRegisterPage implements OnInit {
       action: 'create_user'
     };
 
+    // save current user details to local storage for next procedure.
     this.storage.set('currentSignUpUser', this.txtUsername);
 
+    // http call to laravel api
     return this.httpClient.post(this.global.fn_ApiURL('user'), postData);
   }
 
+  // Navigation to 'tp-upload-profile-pic' for add profile picture view.
   toAddProfilePic() {
     this.router.navigateByUrl('tp-upload-profile-pic', { replaceUrl: true });
   }
 
-  toLogin() {
-
-    this.router.navigateByUrl('tp-login');
-  }
-
+  // loading screen for signing up
   async presentLoading() {
     const loading = await this.loading.create({
       message: 'Signing Up',
@@ -189,11 +109,9 @@ export class TpRegisterPage implements OnInit {
     });
     await loading.present();
 
-    // const { role, data } = await loading.onDidDismiss();
-
-    // console.log('Loading dismissed!');
   }
 
+  // alert prompt for sign up failed
   async presentSignUpAlertPrompt(msg) {
     const alert = await this.alertController.create({
       header: 'Sign Up',
@@ -205,26 +123,13 @@ export class TpRegisterPage implements OnInit {
     await alert.present();
   }
 
-  // async presentLoadingWithOptions() {
-  //   const loading = await this.loading.create({
-  //     spinner: null,
-  //     duration: 5000,
-  //     message: 'Please wait...',
-  //     translucent: true,
-  //     cssClass: 'custom-class custom-loading'
-  //   });
-  //   return await loading.present();
-  // }
-
- 
+  // Simple validation to ensure input field is filled up and is in correct format
   validateUsername() {
     this.txtValidateUsername = (this.txtUsername === '') ? 'Username is required' : '';
   }
 
   validateEmail() {
-    // pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')
-    
-    // this.txtEmail.match(pattern);
+    // pattern refer top ^
     if (this.txtEmail === '') {
       this.txtValidateEmail = 'Email is required';
     } else {
@@ -239,7 +144,7 @@ export class TpRegisterPage implements OnInit {
   }
 
   validateConfirm() {
-    this.txtValidateConfirm = (this.txtConfirm != this.txtPassword) ? 'Password does not match' : '';
+    this.txtValidateConfirm = (this.txtConfirm !== this.txtPassword) ? 'Password does not match' : '';
   }
 
 }

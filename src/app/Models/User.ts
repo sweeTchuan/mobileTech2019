@@ -5,4 +5,5 @@ export class User {
     isLogin: boolean;
     profilePicUrl: string;
     name: string;
+    isUpdate = false;
 }

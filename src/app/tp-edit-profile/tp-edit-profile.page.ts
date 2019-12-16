@@ -37,22 +37,22 @@ export class TpEditProfilePage implements OnInit {
     private loadingController: LoadingController,
     private filePath: FilePath,
     private alertController: AlertController,
-    // private nav: Navigation,
 
   ) { }
 
   objUser: User;
-  txtName;
-  txtUsername;
-  txtEmail;
-  txtSrcProfileImage = '/assets/instagram.png';
-  noChanges = true;
-  notAvailableUsername = true;
-  notAvailableEmail = true;
-  imageChanged = false;
-  profileSectionChanged = false;
+  txtName: string;
+  txtUsername: string;
+  txtEmail: string;
+  txtSrcProfileImage = this.global.DefaultProfilePic;
+  noChanges = true;               // check if any field is changed
+  notAvailableUsername = true;    // work in progress for checking duplicate username in system
+  notAvailableEmail = true;       // work in progress for checking duplicate email in system
+  imageChanged = false;           // check whether new image is selected
+  profileSectionChanged = false;  // check whether text input field has different input than original
   objTempImage: Image;
 
+  // load current user details on init
   ngOnInit() {
     console.log('ngOnInit: editProfile');
     this.plt.ready().then(() => {
@@ -66,9 +66,9 @@ export class TpEditProfilePage implements OnInit {
       });
     });
   }
+
   ionViewWillEnter() {
     console.log('ionViewWillEnter: editProfile');
-
   }
 
   ionViewDidEnter() {
@@ -76,16 +76,7 @@ export class TpEditProfilePage implements OnInit {
     this.loadUserDetails();
   }
 
-  changeProfilePhoto() {
-    console.log('=> changeProfilePhoto');
-    // this.toggleConfirmBtn();
-
-  }
-
-  toggleConfirmBtn() {
-    this.noChanges = !this.noChanges;
-  }
-
+  // load user details from local storage
   loadUserDetails() {
     this.txtUsername = isNullOrUndefined(this.objUser.username) ? '' : this.objUser.username;
     if (!isNullOrUndefined(this.objUser.profilePicUrl) && this.objUser.profilePicUrl !== '') {
@@ -97,6 +88,28 @@ export class TpEditProfilePage implements OnInit {
     this.ref.detectChanges();
   }
 
+  // update current user in local storage
+  updateUserDetails() {
+    this.objUser.username = this.txtUsername;
+    this.objUser.email = this.txtEmail;
+    this.objUser.name = this.txtName;
+    this.objUser.profilePicUrl = this.objTempImage.path;
+    this.objUser.isUpdate = true;
+    this.storage.set('currentUser', this.objUser);
+    console.log('setLoginUser obj => ', this.objUser);
+  }
+
+
+  // =====================================================
+  // the following functions is modified based on tutorial
+  // - get image from camera and local file directory
+  // - creating, saving and extracting the image file path
+  // source:
+  // https://devdactic.com/ionic-4-image-upload-storage/
+  // =====================================================
+
+
+  // button to start update process
   updateProfileStart() {
     console.log('=> updateProfile', this.objUser.id);
     console.log('txtName =>', this.txtName);
@@ -118,6 +131,7 @@ export class TpEditProfilePage implements OnInit {
 
   }
 
+  // check if any of the profile text field is changed or not
   checkProfileSectionChanges() {
     if (this.objUser.username !== this.txtUsername) {
       console.log(this.objUser.username, ' != ', this.txtUsername);
@@ -138,6 +152,7 @@ export class TpEditProfilePage implements OnInit {
     return false;
   }
 
+  // 1. http to api, only update text input of profile
   async updateProfileSection(formData: FormData) {
     const loading = await this.loadingController.create({
       message: 'Updating Profile...',
@@ -145,8 +160,6 @@ export class TpEditProfilePage implements OnInit {
 
     await loading.present();
 
-
-    // this.http.post("http://localhost:8888/upload.php", formData)
     this.http.post(this.global.fn_ApiURL('user'), formData)
       .pipe(
         finalize(() => {
@@ -156,13 +169,8 @@ export class TpEditProfilePage implements OnInit {
       .subscribe(res => {
         console.log('upload profile with image=> ', res);
         if (res['status']) {
-          this.presentToast('Profile with photo update complete.');
-          // this.toastController.dismiss().then(() => {
-          // this.router.navigateByUrl('/start/tabs/posts');
-          this.router.navigateByUrl('/start/tabs/profile');
+          this.completeUpdateAction();
 
-          // this.toLogin();
-          // });
         } else {
           this.presentToast('Profile with photo update failed.');
         }
@@ -192,6 +200,7 @@ export class TpEditProfilePage implements OnInit {
 
   }
 
+  // button function to select image
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image source',
@@ -216,6 +225,7 @@ export class TpEditProfilePage implements OnInit {
     await actionSheet.present();
   }
 
+  // function that handles the selection of image from camera or local file
   takePicture(sourceType: PictureSourceType) {
     console.log('=> takePicture');
     let options: CameraOptions = {
@@ -263,6 +273,8 @@ export class TpEditProfilePage implements OnInit {
     });
   }
 
+  // save the selected image in temperory storage.
+  // then update the view of profile pic
   updateStoredImages(name) {
     console.log('=> updateStoredImages');
     this.storage.get(STORAGE_KEY).then(images => {
@@ -280,15 +292,6 @@ export class TpEditProfilePage implements OnInit {
       console.log('resPath => ', resPath);
       console.log('filePath => ', filePath);
 
-      // let newEntry = {
-      //   name: name,
-      //   path: resPath,
-      //   filePath: filePath
-      // };
-      // this.images = [newEntry, ...this.images];
-
-      // this.objTempImage = newEntry;
-
       this.objTempImage.name = name;
       this.objTempImage.path = resPath;
       this.objTempImage.filePath = filePath;
@@ -297,6 +300,7 @@ export class TpEditProfilePage implements OnInit {
     });
   }
 
+  // prompt for selecting file that is not valid image format
   async invalidFileAlertPrompt(msg) {
     const alert = await this.alertController.create({
       header: 'Insert Photo',
@@ -308,6 +312,7 @@ export class TpEditProfilePage implements OnInit {
     await alert.present();
   }
 
+  // update the page view after image isselected
   updatePicView() {
     this.txtSrcProfileImage = this.objTempImage.path;
     this.noChanges = false;
@@ -315,14 +320,13 @@ export class TpEditProfilePage implements OnInit {
     this.ref.detectChanges(); // trigger change detection cycle
   }
 
+  // button to start update profile process
   updateProfilePic() {
     console.log('=> updateProfilePic');
-
     this.startUpload();
 
   }
 
-  // startUpload(imgEntry) {
   startUpload() {
     console.log('=> startUpload ...');
 
@@ -338,6 +342,7 @@ export class TpEditProfilePage implements OnInit {
       });
   }
 
+  // read image file and prepare Post method input
   readFile(file: any) {
     console.log('=> readFile');
     console.log('File =>', file);
@@ -349,6 +354,7 @@ export class TpEditProfilePage implements OnInit {
       });
       formData.append('image_profile', imgBlob, file.name);
 
+      // choose to update profile picture only or with other text field.
       if (this.profileSectionChanged) {
         formData.append('id', this.objUser.id.toString());
         formData.append('username', this.txtUsername);
@@ -365,6 +371,7 @@ export class TpEditProfilePage implements OnInit {
     reader.readAsArrayBuffer(file);
   }
 
+  // 2. http to api, update image only or all field
   async uploadImageData(formData: FormData) {
     const loading = await this.loadingController.create({
       message: 'Updating Profile...',
@@ -373,7 +380,6 @@ export class TpEditProfilePage implements OnInit {
     await loading.present();
     console.log('check complete');
 
-    // this.http.post("http://localhost:8888/upload.php", formData)
     this.http.post(this.global.fn_ApiURL('user'), formData)
       .pipe(
         finalize(() => {
@@ -383,16 +389,18 @@ export class TpEditProfilePage implements OnInit {
       .subscribe(res => {
         console.log('upload profile with image=> ', res);
         if (res['status']) {
-          this.presentToast('Profile with photo update complete.')
-          // this.toastController.dismiss().then(() => {
-            this.router.navigateByUrl('/start/tabs/profile');
-          // this.toLogin();
-          // });
+          this.completeUpdateAction();
         } else {
           this.presentToast('Profile with photo update failed.')
         }
       });
 
+  }
+
+  completeUpdateAction() {
+    this.presentToast('Profile with photo update complete.');
+    this.updateUserDetails();
+    this.router.navigateByUrl('/start/tabs/profile');
   }
 
 }
