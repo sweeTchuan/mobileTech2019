@@ -1,6 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{txtUsername}}</ion-title>
+    <!-- <ion-title>{{txtUsername}}</ion-title> -->
+    <ion-button size="big" color="light" fill="clear" [routerLink]="['/tp-about-us']" routerLinkActive="router-link-active"
+      slot="start"  >
+      <ion-icon size="big" color="primary" name="information-circle-outline"></ion-icon>
+    </ion-button>
     <ion-button color="light" fill="clear" slot="end" (click)="logOut()">
       <ion-label color="primary">Log Out</ion-label>
       <ion-icon color="primary" name="log-out" size="small" slot="end"></ion-icon>
@@ -9,34 +13,34 @@
 </ion-header>
 
 <ion-content>
-    <ion-grid class="ion-padding" >
-        <ion-row class="ion-justify-content-center">
-          <ion-col class="ion-align-self-center">
-            <div class="ion-text-center ion-padding">
-                <ion-avatar class="avatar"><img class="" src="{{txtSrcProfileImage}}"></ion-avatar>
-            </div>
-            <div class="ion-text-center">
-              <ion-button size="small" fill="outline" class="" (click)="goToEditProfile()">Edit Profile
-              </ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row class="ion-justify-content-center" >
-          <ion-col class="" size-md="6" size-lg="6" size-xs="12">
-            <ion-item>
-              <ion-label color="medium" position="floating">Username</ion-label>
-              <ion-input [(ngModel)]="txtUsername" readonly></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label color="medium" position="floating">Name</ion-label>
-              <ion-input [(ngModel)]="txtName" readonly></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label color="medium" position="floating">Email address</ion-label>
-              <ion-input [(ngModel)]="txtEmail" readonly></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+  <ion-grid class="ion-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-align-self-center">
+        <div class="ion-text-center ion-padding">
+          <ion-avatar class="avatar"><img class="" src="{{txtSrcProfileImage}}"></ion-avatar>
+        </div>
+        <div class="ion-text-center">
+          <ion-button size="small" fill="outline" class="" (click)="goToEditProfile()">Edit Profile
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="" size-md="6" size-lg="6" size-xs="12">
+        <ion-item>
+          <ion-label color="medium" position="floating">Username</ion-label>
+          <ion-input [(ngModel)]="txtUsername" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="medium" position="floating">Name</ion-label>
+          <ion-input [(ngModel)]="txtName" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="medium" position="floating">Email address</ion-label>
+          <ion-input [(ngModel)]="txtEmail" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
