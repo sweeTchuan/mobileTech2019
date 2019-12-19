@@ -51,6 +51,7 @@ export class TpEditProfilePage implements OnInit {
   imageChanged = false;           // check whether new image is selected
   profileSectionChanged = false;  // check whether text input field has different input than original
   objTempImage: Image;
+  isUpdated = false;
 
   // load current user details on init
   ngOnInit() {
@@ -60,6 +61,7 @@ export class TpEditProfilePage implements OnInit {
         if (!isNullOrUndefined(val)) {
           console.log('storage: profile user => ', val);
           this.objUser = val;
+          this.isUpdated = this.objUser.isUpdate;
           this.loadUserDetails();
           this.objTempImage = new Image();
         }
@@ -80,8 +82,13 @@ export class TpEditProfilePage implements OnInit {
   loadUserDetails() {
     this.txtUsername = isNullOrUndefined(this.objUser.username) ? '' : this.objUser.username;
     if (!isNullOrUndefined(this.objUser.profilePicUrl) && this.objUser.profilePicUrl !== '') {
-      this.txtSrcProfileImage = this.global.fn_imageURL(this.objUser.profilePicUrl);
-      console.log('loadUserDetails: picURL=> ', this.txtSrcProfileImage);
+      // this.txtSrcProfileImage = this.global.fn_imageURL(this.objUser.profilePicUrl);
+      // console.log('loadUserDetails: picURL=> ', this.txtSrcProfileImage);
+      if(this.isUpdated){
+        this.txtSrcProfileImage = this.objUser.profilePicUrl;
+      }else{
+        this.txtSrcProfileImage = this.global.fn_imageURL(this.objUser.profilePicUrl);
+      }
     }
     this.txtName = isNullOrUndefined(this.objUser.name) ? '' : this.objUser.name;
     this.txtEmail = isNullOrUndefined(this.objUser.email) ? '' : this.objUser.email;
